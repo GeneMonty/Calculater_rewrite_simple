@@ -3,7 +3,8 @@ Author: Eugenio Montealegre
 Porpuse: Grade Calculator.
 Changes: Refactor, cleaned variables, cleaned naming, UI Cleaned,
 Note: Kept original functionality, refactored and cleaned variable names, function names as recommended.
-Also kept the make_line_dividers function to work better with positive and negative visual space.(avoids cramped lines with this ugly repelit console font, looks prettier in visualstudio (￣ー￣；)
+Also kept the make_line_dividers function to work better with positive and negative visual space.
+(avoids cramped lines with this ugly repelit console font, looks prettier in visualstudio (￣ー￣；)
 */
 
 #include <iostream>
@@ -68,15 +69,12 @@ int main() {
             display_headline_or_instructions("assignment", points_limit);
 
             // Lab 1-2, promp user to get points for this task
-            make_line_divider("short");
             total = get_task_points("Lab Week", 1, 2, points, points_limit, total);
 
             // Chapter Lab 1-10 ,promp user to get points for this task
-            make_line_divider("short");
             total = get_task_points("Chapter Lab", 1, 10, points, points_limit, total);
 
             // Final Project Phases 1-3 ,promp user to get points for this task
-            make_line_divider("short");
             total = get_task_points("Final Project Phase", 1, 3, points, points_limit, total);
 
             // Display final summary to user
@@ -218,7 +216,9 @@ double get_course_points(double course_points) {
 
 // Function gets the points of assigments (tasks) from user
 double get_task_points(string task_name, int task_index, int task_limit, double points, double points_limit, double total) {
-
+    
+    make_line_divider("short");
+    
     while (true) {
         cout << task_name << " [" << task_index << "]: ";
         cin >> points;
