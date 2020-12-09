@@ -15,33 +15,36 @@ Porpuse: Grade Calculator, simplified version, no functions, no error check.
 
 using namespace std;
 
+// Create custom line dividers
 void make_line_divider(string style) { // Function that makes divider shapes
 
-    if (style == "short") {                // Small Divider
+    
+    if (style == "short") {                // Makes a short line Divider
         for (int i = 0; i < 10; i++) {
             cout << "~==";
         }
         cout << "~" << endl;
 
     }
-    else if (style == "long") {            // Long Divider
+    else if (style == "long") {            // Makes a Long line Divider
         for (int i = 0; i < 17; i++) {
             cout << "~==";
         }
         cout << "~" << endl;
 
     }
-    else if (style == "empty") {            // Empty divider
+    else if (style == "empty") {            // Makes Empty line Divider
         cout << endl;
     }
 }
 
+// Function displays headlines or instructions to user
 void display_headline_or_instructions(string title, double points_limit) {
     
     if (title == "name") {
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
         cout << "GRADE CALCULATOR" << endl;
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
     }
 
     if (title == "instructions") {
@@ -58,16 +61,16 @@ void display_headline_or_instructions(string title, double points_limit) {
     }
 
     if (title == "summary") {
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
         cout << "Points Summary" << endl;
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
 
     }
     
     if (title == "letter grades") {
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
         cout << "Letter Grades" << endl;
-        cout << "--------------------------" << endl;
+        make_line_divider("short");
 
     }
     if (title == "goodbye") {
@@ -77,12 +80,14 @@ void display_headline_or_instructions(string title, double points_limit) {
     
 
 };
-double get_task_points(string task_name, int task_index, int task_limit, double points, double points_limit, double total);
+
+// Function gets course_points from user
 double get_course_points(double course_points) {
 
     while (true) {
         cout << "How Many Points are Possible for the Course?: ";
         cin >> course_points;
+        cout << endl;
 
         if (course_points <= 0) {
             cout << "\n  [!] Please enter a number greater than [0]" << endl << endl;
@@ -96,6 +101,7 @@ double get_course_points(double course_points) {
 
 }
 
+// Function display final results to user
 void display_results(double course_points, double total) {
     
     display_headline_or_instructions("summary", {});
@@ -123,60 +129,12 @@ void display_results(double course_points, double total) {
         cout << "Points needed for an " << letters[i] << '[' << grade_letter << ']' << endl;
         i++;
     }
-    cout << endl << "--------------------------" << endl;
+    make_line_divider("short");
 }
 
+// Function gets the points of assigments from user
+double get_task_points(string task_name, int task_index, int task_limit, double points, double points_limit, double total) {
 
-
-
-
-
-int main() {
-
-    // Declare Variables
-    double course_points = 0.0;
-    double points = 0.0;
-    double total = 0.0;
-
-    // Display Title and Instructions
-    display_headline_or_instructions("name", {});
-    display_headline_or_instructions("instructions", {});
-
-    // Get the total Course Points from user.
-    course_points = get_course_points(course_points);
-
-    // Perform Calculations to get the value of exam and the points_limit
-    double exam_points = 0.25 * course_points;
-    double points_limit = (course_points - exam_points) / 15; // used for dynamic input check in get_task_points()
-
-    // Get Assignment points from user.
-    display_headline_or_instructions("assignment",{});
-
-
-    // Lab 1-2
-    total = get_task_points("Lab Week", 1, 2, points, points_limit, total);
-    
-    // Chapter Lab 1-10
-    //total = get_task_points("Chapter Lab", 1, 10, points, points_limit, total);
-    
-    // Final Project Phases 1-3
-    //total = get_task_points("Final Project Phase", 1, 3, points, points_limit, total);
-   
-
-    // Calculae and Display Results
-    display_results(course_points,total);
-    display_headline_or_instructions("goodbye",{});
-
-}
-
-
-
-
-
-
-
-double get_task_points(string task_name,int task_index,int task_limit,double points,double points_limit,double total) {
-    
     while (true) {
         cout << task_name << " [" << task_index << "]: ";
         cin >> points;
@@ -194,7 +152,7 @@ double get_task_points(string task_name,int task_index,int task_limit,double poi
         else {
             total += points;
             task_index += 1;
-            
+
         }
     }
     cout << endl;
@@ -203,16 +161,56 @@ double get_task_points(string task_name,int task_index,int task_limit,double poi
 
 
 
+int main() {
+
+    // Declare Variables
+    double course_points = 0.0;
+    double points = 0.0;
+    double total = 0.0;
+
+    // Displays program Name
+    display_headline_or_instructions("name", {});
+
+    // Displays initial Instructions
+    display_headline_or_instructions("instructions", {});
+
+    // Promp user to get points for the course
+    course_points = get_course_points(course_points);
+
+    // Perform Calculations to get the value for points_limit
+    // point_limit, caps the maximum allowed input number for assigments according to course_points.
+    double points_limit = (course_points - (course_points*0.25)) / 15; 
+
+    // Promp user to get Assignment points from user, and display warning.
+    display_headline_or_instructions("assignment",points_limit);
+
+    // Lab 1-2, promp user to get points for this task
+    total = get_task_points("Lab Week", 1, 2, points, points_limit, total);
+    
+    // Chapter Lab 1-10 ,promp user to get points for this task
+    total = get_task_points("Chapter Lab", 1, 10, points, points_limit, total);
+    
+    // Final Project Phases 1-3 ,promp user to get points for this task
+    total = get_task_points("Final Project Phase", 1, 3, points, points_limit, total);
+
+    // Display final summary to user
+    display_results(course_points,total);
+
+    // calls function to display goodbye
+    display_headline_or_instructions("goodbye",{});
+
+}
 
 
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
+
+
+
+
+
+
+
+
